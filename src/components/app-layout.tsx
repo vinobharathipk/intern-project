@@ -71,9 +71,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="sm:hidden" />
             <div className="flex-1" />
             <div className="flex items-center gap-4">
-               <div className="flex items-center gap-2">
-                  <Icons.HyundaiLogo className="h-10 w-auto text-primary" />
-              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
