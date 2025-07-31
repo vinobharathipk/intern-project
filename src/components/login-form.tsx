@@ -15,13 +15,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
 
+const FAKE_EMAIL = "staff@hyundai.com";
 const FAKE_PASSWORD = "password123";
 
 export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const companyName = 'Hyundai'; // Hardcoded for Hyundai access only
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -38,7 +39,7 @@ export function LoginForm() {
 
     // Simulate network delay
     setTimeout(() => {
-      if (password === FAKE_PASSWORD) {
+      if (email.toLowerCase() === FAKE_EMAIL && password === FAKE_PASSWORD) {
         localStorage.setItem('hyundai-intern-connect-auth', 'true');
         toast({
           title: "Login Successful",
@@ -49,7 +50,7 @@ export function LoginForm() {
         toast({
           variant: "destructive",
           title: "Login Failed",
-          description: "Invalid password.",
+          description: "Invalid email or password.",
         });
         setIsLoading(false);
       }
@@ -66,12 +67,24 @@ export function LoginForm() {
         <CardHeader>
           <CardTitle>Hyundai Staff Login</CardTitle>
           <CardDescription>
-            Enter your password to access the portal.
+            Enter your credentials to access the portal.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+           <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="staff@hyundai.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Referral Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
