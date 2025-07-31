@@ -14,7 +14,7 @@ export default function LoginPage() {
       ></div>
       <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
         <div className="text-white space-y-4">
-            <Icons.HyundaiLogo className="h-20 w-20 mb-6 text-white" />
+            
             <h1 className="text-5xl font-bold leading-tight">Welcome to Hyundai.</h1>
             <h2 className="text-3xl font-light">Your drive begins here.</h2>
             <p className="text-lg text-gray-200">Connecting innovation with everyday commuting.</p>
