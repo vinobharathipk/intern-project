@@ -14,7 +14,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
-import { Icons } from './icons';
 
 const FAKE_PASSWORD = "password123";
 
@@ -22,7 +21,7 @@ export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
   const [password, setPassword] = useState('');
-  const [companyName, setCompanyName] = useState('Hyundai');
+  const companyName = 'Hyundai'; // Hardcoded for Hyundai access only
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
@@ -39,7 +38,7 @@ export function LoginForm() {
 
     // Simulate network delay
     setTimeout(() => {
-      if (companyName === 'Hyundai' && password === FAKE_PASSWORD) {
+      if (password === FAKE_PASSWORD) {
         localStorage.setItem('hyundai-intern-connect-auth', 'true');
         toast({
           title: "Login Successful",
@@ -50,7 +49,7 @@ export function LoginForm() {
         toast({
           variant: "destructive",
           title: "Login Failed",
-          description: "Invalid company name or password.",
+          description: "Invalid password.",
         });
         setIsLoading(false);
       }
@@ -65,23 +64,12 @@ export function LoginForm() {
     <form onSubmit={handleLogin}>
       <Card>
         <CardHeader>
-          <CardTitle>Staff Login</CardTitle>
+          <CardTitle>Hyundai Staff Login</CardTitle>
           <CardDescription>
-            Enter your credentials to access the portal.
+            Enter your password to access the portal.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="company-name">Company Name</Label>
-            <Input
-              id="company-name"
-              type="text"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              required
-              disabled={isLoading}
-            />
-          </div>
           <div className="space-y-2">
             <Label htmlFor="password">Referral Password</Label>
             <Input
