@@ -83,7 +83,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel>
+                    <div className="flex items-center gap-2">
+                        <Icons.HyundaiLogo className="h-4 w-4 text-primary" />
+                        <span>My Account</span>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <Icons.LogOut className="mr-2 h-4 w-4" />
