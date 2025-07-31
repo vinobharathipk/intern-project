@@ -69,10 +69,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex flex-1 flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <SidebarTrigger className="sm:hidden" />
-            <div className="flex-1">
-              {/* Optional Header Title can go here */}
-            </div>
+            <div className="flex-1" />
             <div className="flex items-center gap-4">
+               <div className="flex items-center gap-2">
+                  <Icons.HyundaiLogo className="h-10 w-auto text-primary" />
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
