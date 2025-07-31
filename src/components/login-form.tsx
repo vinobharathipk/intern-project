@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
+import { Icons } from './icons';
 
 const FAKE_EMAIL = "staff@hyundai.com";
 const FAKE_PASSWORD = "password123";
@@ -64,11 +65,12 @@ export function LoginForm() {
   return (
     <form onSubmit={handleLogin}>
       <Card>
-        <CardHeader>
-          <CardTitle>Hyundai Staff Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access the portal.
-          </CardDescription>
+        <CardHeader className="items-center text-center">
+            <Icons.HyundaiLogo className="h-12 w-12 text-primary mb-2" />
+            <CardTitle>Staff Login</CardTitle>
+            <CardDescription>
+                Enter your credentials to continue.
+            </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
            <div className="space-y-2">
