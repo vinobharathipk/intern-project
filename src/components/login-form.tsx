@@ -6,15 +6,12 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
-import { Icons } from './icons';
 
 const FAKE_EMAIL = "staff@hyundai.com";
 const FAKE_PASSWORD = "password123";
@@ -66,10 +63,7 @@ export function LoginForm() {
     <form onSubmit={handleLogin}>
       <Card>
         <CardHeader className="items-center text-center">
-            <CardTitle>Staff Login</CardTitle>
-            <CardDescription>
-                Enter your credentials to continue.
-            </CardDescription>
+            
         </CardHeader>
         <CardContent className="space-y-4">
            <div className="space-y-2">
