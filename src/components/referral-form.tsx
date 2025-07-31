@@ -58,7 +58,17 @@ export function ReferralForm() {
   const form = useForm<ReferralFormValues>({
     resolver: zodResolver(referralFormSchema),
     defaultValues: {
+      studentName: '',
+      studentEmail: '',
+      studentPhone: '',
+      degree: '',
+      department: '',
+      college: '',
+      hodEmail: '',
       internshipType: 'Internship',
+      referralName: '',
+      referralDepartment: '',
+      referralCompanyId: '',
     },
   });
 
