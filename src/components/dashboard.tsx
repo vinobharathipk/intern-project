@@ -28,14 +28,12 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 const COLORS = ['#1E3A8A', '#A78BFA', '#E0E7FF', '#8884d8', '#82ca9d'];
 
 export function Dashboard() {
-  const [interns, setInterns] = useState<Intern[]>(mockInterns);
+  const [interns, setInterns] = useState<Intern[]>([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const storedInterns = localStorage.getItem('interns');
-    if (storedInterns) {
-      setInterns(JSON.parse(storedInterns));
-    }
+    setInterns(storedInterns ? JSON.parse(storedInterns) : mockInterns);
   }, []);
 
   const filteredInterns = interns.filter(
@@ -136,7 +134,7 @@ export function Dashboard() {
         </Card>
       </TabsContent>
       <TabsContent value="reports">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
             <Card>
               <CardHeader>
                 <CardTitle>Submissions by Department</CardTitle>
@@ -165,17 +163,6 @@ export function Dashboard() {
                   </PieChart>
                 </ResponsiveContainer>
               </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Hiring Patterns</CardTitle>
-                 <CardDescription>Analysis of priority applicants based on past data.</CardDescription>
-              </CardHeader>
-               <CardContent>
-                 <div className="text-center p-8">
-                    <p className="text-muted-foreground">AI-powered pattern generation coming soon.</p>
-                 </div>
-               </CardContent>
             </Card>
         </div>
       </TabsContent>
