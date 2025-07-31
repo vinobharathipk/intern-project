@@ -10,7 +10,7 @@ export default function LoginPage() {
           backgroundImage: "url('https://placehold.co/1920x1080.png')",
           filter: 'blur(2px) brightness(0.6)'
         }}
-        data-ai-hint="hyundai car night"
+        data-ai-hint="hyundai car night city"
       ></div>
       <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
         <div className="text-white space-y-4">
