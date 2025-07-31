@@ -75,8 +75,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
                     <Avatar>
-                      <AvatarImage src="https://placehold.co/32x32" alt="@shadcn" data-ai-hint="person avatar"/>
-                      <AvatarFallback>JD</AvatarFallback>
+                      <AvatarImage src="/hyundai-logo.svg" alt="Hyundai Logo" />
+                      <AvatarFallback>H</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
