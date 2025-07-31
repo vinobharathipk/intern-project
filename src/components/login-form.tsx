@@ -66,7 +66,6 @@ export function LoginForm() {
     <form onSubmit={handleLogin}>
       <Card>
         <CardHeader className="items-center text-center">
-            <Icons.HyundaiLogo className="h-12 w-12 text-primary mb-2" />
             <CardTitle>Staff Login</CardTitle>
             <CardDescription>
                 Enter your credentials to continue.
