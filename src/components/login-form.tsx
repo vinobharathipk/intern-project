@@ -8,13 +8,10 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
-  CardDescription
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
-import { Icons } from './icons';
 
 const FAKE_EMAIL = "staff@hyundai.com";
 const FAKE_PASSWORD = "password123";
