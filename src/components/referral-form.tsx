@@ -42,9 +42,9 @@ const referralFormSchema = z.object({
   referralName: z.string().min(2, 'Your name is required.'),
   referralDepartment: z.string().min(2, 'Your department is required.'),
   referralCompanyId: z.string().min(1, 'Your company ID is required.'),
+  resume: z.any().refine((files) => files?.length == 1, 'Resume is required.'),
   bonafideCertificate: z.any().refine((files) => files?.length == 1, 'Bonafide certificate is required.'),
   studentId: z.any().refine((files) => files?.length == 1, 'Student ID is required.'),
-  resume: z.any().refine((files) => files?.length == 1, 'Resume is required.'),
   vaccinationCertificate: z.any().refine((files) => files?.length == 1, 'Vaccination certificate is required.'),
 });
 
@@ -147,6 +147,13 @@ export function ReferralForm() {
                 <div className="space-y-4">
                     <h3 className="text-lg font-medium text-primary">Document Upload</h3>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField control={form.control} name="resume" render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Resume</FormLabel>
+                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
                         <FormField control={form.control} name="bonafideCertificate" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Bonafide Certificate</FormLabel>
@@ -157,13 +164,6 @@ export function ReferralForm() {
                         <FormField control={form.control} name="studentId" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Student ID Card</FormLabel>
-                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )} />
-                        <FormField control={form.control} name="resume" render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Resume</FormLabel>
                                 <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                                 <FormMessage />
                             </FormItem>
