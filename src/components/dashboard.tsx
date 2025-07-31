@@ -117,7 +117,7 @@ export function Dashboard() {
                         {intern.status}
                       </Badge>
                       {intern.priority && (
-                        <Icons.Star className="ml-2 inline h-4 w-4 text-amber-500" />
+                        <Icons.HyundaiLogo className="ml-2 inline h-4 w-4 text-primary" />
                       )}
                     </TableCell>
                     <TableCell className="text-right">
