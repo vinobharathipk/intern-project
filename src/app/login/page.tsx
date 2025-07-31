@@ -7,7 +7,7 @@ export default function LoginPage() {
        <div 
         className="absolute inset-0 bg-cover bg-center z-0" 
         style={{ 
-          backgroundImage: "url('https://placehold.co/1920x1080.png')",
+          backgroundImage: "url('/background.png')",
           filter: 'blur(2px) brightness(0.6)'
         }}
         data-ai-hint="hyundai car night city"
