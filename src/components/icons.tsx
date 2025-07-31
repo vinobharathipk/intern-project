@@ -1,0 +1,55 @@
+import { forwardRef, type SVGProps } from 'react';
+import { 
+    FileText, 
+    User, 
+    Users, 
+    LineChart, 
+    LogOut, 
+    Search, 
+    Plus, 
+    Building2, 
+    Mail, 
+    Phone, 
+    GraduationCap, 
+    Briefcase, 
+    FileUp, 
+    CheckCircle2,
+    BarChart,
+    ChevronDown,
+    Home,
+    FilePlus2,
+    MoreHorizontal,
+    Star,
+    Bell,
+    Settings,
+} from 'lucide-react';
+
+export const Icons = {
+  FileText,
+  User,
+  Users,
+  LineChart,
+  LogOut,
+  Search,
+  Plus,
+  Building2,
+  Mail,
+  Phone,
+  GraduationCap,
+  Briefcase,
+  FileUp,
+  CheckCircle2,
+  BarChart,
+  ChevronDown,
+  Home,
+  FilePlus2,
+  MoreHorizontal,
+  Star,
+  Bell,
+  Settings,
+  HyundaiLogo: forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>((props, ref) => (
+    <svg ref={ref} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M14.628 3.32l-3.356 6.711-3.355-6.71H3v17.359h4.843v-7.658l3.434 6.91h1.445l3.434-6.91v7.658H21V3.32h-6.372z" />
+    </svg>
+  )),
+};
