@@ -73,26 +73,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               {/* Optional Header Title can go here */}
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Icons.Bell className="h-5 w-5" />
-                <span className="sr-only">Notifications</span>
-              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
                     <Avatar>
-                      <AvatarImage src="https://placehold.co/32x32" alt="@shadcn" />
+                      <AvatarImage src="https://placehold.co/32x32" alt="@shadcn" data-ai-hint="person avatar"/>
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Icons.Settings className="mr-2 h-4 w-4" />
-                    Settings
-                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <Icons.LogOut className="mr-2 h-4 w-4" />

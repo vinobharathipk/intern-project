@@ -29,6 +29,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from "@/hooks/use-toast";
 import { Icons } from './icons';
 import { Separator } from './ui/separator';
+import type { Intern } from '@/lib/types';
+import { mockInterns } from '@/lib/data';
 
 const referralFormSchema = z.object({
   studentName: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -74,17 +76,47 @@ export function ReferralForm() {
 
   function onSubmit(data: ReferralFormValues) {
     setIsLoading(true);
-    console.log(data);
     
-    // Simulate API call
     setTimeout(() => {
-        setIsLoading(false);
-        toast({
-            title: "Submission Successful!",
-            description: "The intern's details have been recorded.",
-            variant: "default",
-        });
-        router.push('/submission-success');
+        try {
+            const existingInternsJSON = localStorage.getItem('interns');
+            const existingInterns: Intern[] = existingInternsJSON ? JSON.parse(existingInternsJSON) : mockInterns;
+            
+            const newIntern: Intern = {
+                id: `HIC${(existingInterns.length + 1).toString().padStart(3, '0')}`,
+                studentName: data.studentName,
+                email: data.studentEmail,
+                phone: data.studentPhone,
+                degree: data.degree,
+                department: data.department,
+                college: data.college,
+                hodEmail: data.hodEmail,
+                internshipType: data.internshipType,
+                submissionDate: new Date().toISOString().split('T')[0],
+                status: 'Pending',
+                priority: Math.random() > 0.5, // Randomly assign priority for demo
+                referralName: data.referralName,
+            };
+
+            const updatedInterns = [...existingInterns, newIntern];
+            localStorage.setItem('interns', JSON.stringify(updatedInterns));
+
+            toast({
+                title: "Submission Successful!",
+                description: "The intern's details have been recorded.",
+                variant: "default",
+            });
+            router.push('/submission-success');
+        } catch (error) {
+            console.error("Failed to save referral:", error);
+            toast({
+                title: "Submission Failed",
+                description: "Could not save the referral. Please try again.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }, 1500);
   }
 

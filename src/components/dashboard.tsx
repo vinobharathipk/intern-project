@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -30,6 +30,13 @@ const COLORS = ['#1E3A8A', '#A78BFA', '#E0E7FF', '#8884d8', '#82ca9d'];
 export function Dashboard() {
   const [interns, setInterns] = useState<Intern[]>(mockInterns);
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    const storedInterns = localStorage.getItem('interns');
+    if (storedInterns) {
+      setInterns(JSON.parse(storedInterns));
+    }
+  }, []);
 
   const filteredInterns = interns.filter(
     (intern) =>
