@@ -8,6 +8,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,8 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Icons } from './icons';
 
 const FAKE_USERS = {
-    "hr@hyundai.com": { password: "password123", role: "hr" },
-    "employee@hyundai.com": { password: "password123", role: "employee" },
+    "hr@hyundai.com": { password: "hrpass123", role: "hr" },
+    "employee@hyundai.com": { password: "emppass123", role: "employee" },
 };
 
 export function LoginForm() {
@@ -79,8 +80,8 @@ export function LoginForm() {
   return (
     <form onSubmit={handleLogin}>
       <Card>
-        <CardHeader className="items-center text-center">
-            <Icons.HyundaiLogo className="h-10 w-auto text-primary" />
+        <CardHeader>
+            <CardTitle className="text-xl text-center font-bold">Intern Connect Portal</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
            <div className="space-y-2">
@@ -104,7 +105,7 @@ export function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
-              placeholder="password123"
+              placeholder="••••••••"
             />
           </div>
         </CardContent>
