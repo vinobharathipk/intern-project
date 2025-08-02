@@ -12,9 +12,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
+import { Icons } from './icons';
 
-const FAKE_EMAIL = "hr@hyundai.com";
-const FAKE_PASSWORD = "password123";
+const FAKE_USERS = {
+    "hr@hyundai.com": { password: "password123", role: "hr" },
+    "employee@hyundai.com": { password: "password123", role: "employee" },
+};
 
 export function LoginForm() {
   const router = useRouter();
@@ -27,7 +30,12 @@ export function LoginForm() {
   useEffect(() => {
     setIsClient(true);
     if (localStorage.getItem('hyundai-intern-connect-auth') === 'true') {
-      router.replace('/');
+      const role = localStorage.getItem('hyundai-user-role');
+      if (role === 'hr') {
+        router.replace('/');
+      } else {
+        router.replace('/submit-referral');
+      }
     }
   }, [router]);
 
@@ -35,15 +43,24 @@ export function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate network delay
     setTimeout(() => {
-      if (email.toLowerCase() === FAKE_EMAIL && password === FAKE_PASSWORD) {
+      const user = FAKE_USERS[email.toLowerCase() as keyof typeof FAKE_USERS];
+
+      if (user && password === user.password) {
         localStorage.setItem('hyundai-intern-connect-auth', 'true');
+        localStorage.setItem('hyundai-user-role', user.role);
+
         toast({
           title: "Login Successful",
           description: "Redirecting to your dashboard...",
         });
-        router.push('/');
+
+        if (user.role === 'hr') {
+            router.push('/');
+        } else {
+            router.push('/submit-referral');
+        }
+
       } else {
         toast({
           variant: "destructive",
@@ -63,6 +80,7 @@ export function LoginForm() {
     <form onSubmit={handleLogin}>
       <Card>
         <CardHeader className="items-center text-center">
+            <Icons.HyundaiLogo className="h-10 w-auto text-primary" />
         </CardHeader>
         <CardContent className="space-y-4">
            <div className="space-y-2">
@@ -86,6 +104,7 @@ export function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
+              placeholder="password123"
             />
           </div>
         </CardContent>

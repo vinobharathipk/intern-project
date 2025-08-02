@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -10,9 +11,15 @@ import { Icons } from './icons';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserRole(localStorage.getItem('hyundai-user-role'));
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('hyundai-intern-connect-auth');
+    localStorage.removeItem('hyundai-user-role');
     router.push('/login');
   };
 
@@ -30,16 +37,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                  onClick={() => router.push('/')}
-                  isActive={pathname === '/'}
-                  tooltip="Dashboard"
-                >
-                  <Icons.Home />
-                  <span>Dashboard</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {userRole === 'hr' && (
+                 <SidebarMenuItem>
+                    <SidebarMenuButton 
+                      onClick={() => router.push('/')}
+                      isActive={pathname === '/'}
+                      tooltip="Dashboard"
+                    >
+                      <Icons.Home />
+                      <span>Dashboard</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+              )}
               <SidebarMenuItem>
                 <SidebarMenuButton 
                   onClick={() => router.push('/submit-referral')}
@@ -75,8 +84,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
                     <Avatar>
-                      <AvatarImage asChild src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0iY3VycmVudENvbG9yIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0zMDMuMiwyNTYuM2MwLTIzLjQtMS00MS4zLTMtNTMuNmMtMi0xMi4zLTUuMi0yMi4zLTkuNS0yOS44Yy00LjMtNy41LTkuOS0xMi45LTE2LjgtMTYuMmMtNi45LTMuMy0xNS00LjktMjQuMy00LjljLTkuNSwwLTE3LjgsMS42LTI0LjgsNC45Yy03LDMuMy0xMi42LDguNi0xNi44LDE2LjJjLTQuMiw3LjYtNy40LDE3LjYtOS41LDI5LjhjLTIuMSwxMi4yLTMuMSwzMC4yLTMuMSw1My42YzAsMjMuNCwxLDQxLjMsMyw1My42YzIsMTIuMyw1LjIsMjIuMyw5LjUsMjkuOGM0LjMsNy41LDkuOSwxMi45LDE2LjgsMTYuMmM2LjksMy4zLDE1LDQuOSwyNC4zLDQuOWM5LjUsMCwxNy44LTEuNiwyNC44LTQuOWM3LTMuMywxMi42LTguNiwxNi44LTE2LjJjNC4yLTcuNiw3LjQtMTcuNiw5LjUtMjkuOEMzMDIuMiwyOTcuNiwzMDMuMiwyNzkuNywzMDMuMiwyNTYuM3ogTTI1NiwweNDczLjdjLTEyMC4yLDAtMjE3LjctOTcuNS0yMTcuNy0yMTcuN1MxMzUuOCwzOC4zLDI1NiwzOC4zczIxNy43LDk3LjUsMjE3LjcsMjE3LjdTMzc2LjIsNDczLjcsMjU2LDQ3My43eiBNNDM1LjMsMjU2LjNjMC05OS4xLTgwLjItMTc5LjMtMTc5LjMtMTc5LjNTNzYuNywxNTcuMSw3Ni43LDI1Ni4zczgwLjIsMTc5LjMsMTc5LjMsMTc5LjNTNDM1LjMsMzU1LjQsNDM1LjMsMjU2LjN6IiAvPjwvc3ZnPg==">
-                       <Icons.HyundaiLogo />
+                      <AvatarImage asChild src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiMwMDJDNCIvPgo8cGF0aCBkPSJNOS40MDQyNiAxMC44MzVMOS40MDQyNiAyMS4xNjVIMTIuNDk0N0wxMi40OTQ3IDE2LjYxTDExLjI4OTQgMTYuNjFMMTkuNzA2OCAyMS4xNjVIMjIuNTk1N0wxNC4yNzM2IDEzLjU5NUwxOS43MDY4IDEwLjgzNUgyMi41OTU3TDkuNDA0MjYgMTAuODM1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==">
+                       <Icons.User />
                       </AvatarImage>
                       <AvatarFallback>H</AvatarFallback>
                     </Avatar>

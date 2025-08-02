@@ -13,6 +13,32 @@ import { useToast } from '@/hooks/use-toast';
 import type { Intern } from '@/lib/types';
 import { Icons } from '@/components/icons';
 
+function HRGuard({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
+    const [isAuthorized, setIsAuthorized] = useState(false);
+
+    useEffect(() => {
+        const role = localStorage.getItem('hyundai-user-role');
+        if (role !== 'hr') {
+            router.replace('/submit-referral');
+        } else {
+            setIsAuthorized(true);
+        }
+    }, [router]);
+
+    if (!isAuthorized) {
+        return (
+            <div className="p-4 sm:px-6 sm:py-0 space-y-4">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-64 w-full" />
+            </div>
+        );
+    }
+
+    return <>{children}</>;
+}
+
+
 export default function ReferralDetailsPage() {
     const router = useRouter();
     const params = useParams();
@@ -62,9 +88,11 @@ export default function ReferralDetailsPage() {
     if (isLoading) {
         return (
             <AuthGuard>
-                <AppLayout>
-                    <Skeleton className="w-full h-[600px]" />
-                </AppLayout>
+                <HRGuard>
+                    <AppLayout>
+                        <Skeleton className="w-full h-[600px]" />
+                    </AppLayout>
+                </HRGuard>
             </AuthGuard>
         );
     }
@@ -72,14 +100,16 @@ export default function ReferralDetailsPage() {
     if (!intern) {
         return (
              <AuthGuard>
-                <AppLayout>
-                    <div className="flex flex-col items-center justify-center text-center py-12">
-                        <Icons.FileText className="w-16 h-16 text-muted-foreground mb-4" />
-                        <h1 className="text-2xl font-bold">Referral Not Found</h1>
-                        <p className="text-muted-foreground mb-6">The referral with ID '{id}' could not be found.</p>
-                        <Button onClick={() => router.push('/')}>Back to Dashboard</Button>
-                    </div>
-                </AppLayout>
+                <HRGuard>
+                    <AppLayout>
+                        <div className="flex flex-col items-center justify-center text-center py-12">
+                            <Icons.FileText className="w-16 h-16 text-muted-foreground mb-4" />
+                            <h1 className="text-2xl font-bold">Referral Not Found</h1>
+                            <p className="text-muted-foreground mb-6">The referral with ID '{id}' could not be found.</p>
+                            <Button onClick={() => router.push('/')}>Back to Dashboard</Button>
+                        </div>
+                    </AppLayout>
+                </HRGuard>
             </AuthGuard>
         );
     }
@@ -107,63 +137,65 @@ export default function ReferralDetailsPage() {
 
     return (
         <AuthGuard>
-            <AppLayout>
-                <div className="max-w-4xl mx-auto py-8">
-                     <Button variant="outline" onClick={() => router.back()} className="mb-4">
-                        <Icons.ChevronLeft className="mr-2 h-4 w-4" />
-                        Back to Dashboard
-                    </Button>
-                    <Card>
-                        <CardHeader>
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <CardTitle className="text-2xl">{intern.studentName}</CardTitle>
-                                    <CardDescription>Referral ID: {intern.id}</CardDescription>
+            <HRGuard>
+                <AppLayout>
+                    <div className="max-w-4xl mx-auto py-8">
+                        <Button variant="outline" onClick={() => router.back()} className="mb-4">
+                            <Icons.ChevronLeft className="mr-2 h-4 w-4" />
+                            Back to Dashboard
+                        </Button>
+                        <Card>
+                            <CardHeader>
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <CardTitle className="text-2xl">{intern.studentName}</CardTitle>
+                                        <CardDescription>Referral ID: {intern.id}</CardDescription>
+                                    </div>
+                                    <Badge variant={getStatusVariant(intern.status)} className="text-sm">{intern.status}</Badge>
                                 </div>
-                                <Badge variant={getStatusVariant(intern.status)} className="text-sm">{intern.status}</Badge>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <Separator />
-                            <h3 className="text-lg font-semibold text-primary">Student Information</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <DetailItem label="Email" value={intern.email} />
-                                <DetailItem label="Phone" value={intern.phone} />
-                                <DetailItem label="Degree" value={intern.degree} />
-                                <DetailItem label="College" value={intern.college} />
-                                <DetailItem label="HOD Email" value={intern.hodEmail} />
-                                <DetailItem label="Preferred Department" value={intern.department} />
-                                <DetailItem label="Internship Type" value={intern.internshipType} />
-                                <DetailItem label="Submission Date" value={intern.submissionDate} />
-                            </div>
-                            <Separator />
-                            <h3 className="text-lg font-semibold text-primary">Referral Information</h3>
-                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <DetailItem label="Referred By" value={intern.referralName} />
-                            </div>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <Separator />
+                                <h3 className="text-lg font-semibold text-primary">Student Information</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <DetailItem label="Email" value={intern.email} />
+                                    <DetailItem label="Phone" value={intern.phone} />
+                                    <DetailItem label="Degree" value={intern.degree} />
+                                    <DetailItem label="College" value={intern.college} />
+                                    <DetailItem label="HOD Email" value={intern.hodEmail} />
+                                    <DetailItem label="Preferred Department" value={intern.department} />
+                                    <DetailItem label="Internship Type" value={intern.internshipType} />
+                                    <DetailItem label="Submission Date" value={intern.submissionDate} />
+                                </div>
+                                <Separator />
+                                <h3 className="text-lg font-semibold text-primary">Referral Information</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <DetailItem label="Referred By" value={intern.referralName} />
+                                </div>
 
-                             <Separator />
-                            <h3 className="text-lg font-semibold text-primary">Submitted Documents</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <DocumentLink label="Resume" dataUrl={intern.resume} />
-                                <DocumentLink label="Bonafide Certificate" dataUrl={intern.bonafideCertificate} />
-                                <DocumentLink label="Student ID" dataUrl={intern.studentId} />
-                                <DocumentLink label="Vaccination Certificate" dataUrl={intern.vaccinationCertificate} />
-                            </div>
-                        </CardContent>
-                        <CardFooter className="bg-muted/50 px-6 py-4 flex justify-end gap-2">
-                           <Button variant="destructive" onClick={() => handleStatusChange('Rejected')} disabled={intern.status === 'Rejected'}>
-                               <Icons.XCircle className="mr-2 h-4 w-4" />
-                               Reject
-                           </Button>
-                           <Button onClick={() => handleStatusChange('Verified')} disabled={intern.status === 'Verified'}>
-                               <Icons.CheckCircle className="mr-2 h-4 w-4" />
-                               Verify
-                           </Button>
-                        </CardFooter>
-                    </Card>
-                </div>
-            </AppLayout>
+                                <Separator />
+                                <h3 className="text-lg font-semibold text-primary">Submitted Documents</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <DocumentLink label="Resume" dataUrl={intern.resume} />
+                                    <DocumentLink label="Bonafide Certificate" dataUrl={intern.bonafideCertificate} />
+                                    <DocumentLink label="Student ID" dataUrl={intern.studentId} />
+                                    <DocumentLink label="Vaccination Certificate" dataUrl={intern.vaccinationCertificate} />
+                                </div>
+                            </CardContent>
+                            <CardFooter className="bg-muted/50 px-6 py-4 flex justify-end gap-2">
+                            <Button variant="destructive" onClick={() => handleStatusChange('Rejected')} disabled={intern.status === 'Rejected'}>
+                                <Icons.XCircle className="mr-2 h-4 w-4" />
+                                Reject
+                            </Button>
+                            <Button onClick={() => handleStatusChange('Verified')} disabled={intern.status === 'Verified'}>
+                                <Icons.CheckCircle className="mr-2 h-4 w-4" />
+                                Verify
+                            </Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </AppLayout>
+            </HRGuard>
         </AuthGuard>
     );
 }
