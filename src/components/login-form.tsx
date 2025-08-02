@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from "@/hooks/use-toast";
 
-const FAKE_EMAIL = "staff@hyundai.com";
+const FAKE_EMAIL = "hr@hyundai.com";
 const FAKE_PASSWORD = "password123";
 
 export function LoginForm() {
@@ -70,7 +70,7 @@ export function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="staff@hyundai.com"
+              placeholder="hr@hyundai.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
