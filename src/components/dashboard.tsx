@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardContent,
@@ -30,6 +31,7 @@ const COLORS = ['#1E3A8A', '#A78BFA', '#E0E7FF', '#8884d8', '#82ca9d'];
 export function Dashboard() {
   const [interns, setInterns] = useState<Intern[]>([]);
   const [filter, setFilter] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const storedInterns = localStorage.getItem('interns');
@@ -54,6 +56,10 @@ export function Dashboard() {
       default:
         return 'outline';
     }
+  };
+  
+  const handleViewDetails = (internId: string) => {
+    router.push(`/referral/${internId}`);
   };
 
   return (
@@ -100,7 +106,7 @@ export function Dashboard() {
               </TableHeader>
               <TableBody>
                 {filteredInterns.map((intern) => (
-                  <TableRow key={intern.id} className={intern.priority ? 'bg-primary/5' : ''}>
+                  <TableRow key={intern.id} className={intern.priority ? 'bg-primary/5' : ''} onClick={() => handleViewDetails(intern.id)} style={{cursor: 'pointer'}}>
                     <TableCell>
                       <div className="font-medium">{intern.studentName}</div>
                       <div className="hidden text-sm text-muted-foreground md:inline">
@@ -121,7 +127,7 @@ export function Dashboard() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleViewDetails(intern.id); }}>
                         <Icons.MoreHorizontal className="h-4 w-4" />
                         <span className="sr-only">More</span>
                       </Button>

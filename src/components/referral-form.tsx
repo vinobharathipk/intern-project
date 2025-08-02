@@ -52,6 +52,15 @@ const referralFormSchema = z.object({
 
 type ReferralFormValues = z.infer<typeof referralFormSchema>;
 
+const fileToDataURL = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
 export function ReferralForm() {
   const router = useRouter();
   const { toast } = useToast();
@@ -74,50 +83,59 @@ export function ReferralForm() {
     },
   });
 
-  function onSubmit(data: ReferralFormValues) {
+  async function onSubmit(data: ReferralFormValues) {
     setIsLoading(true);
     
-    setTimeout(() => {
-        try {
-            const existingInternsJSON = localStorage.getItem('interns');
-            const existingInterns: Intern[] = existingInternsJSON ? JSON.parse(existingInternsJSON) : mockInterns;
-            
-            const newIntern: Intern = {
-                id: `HIC${(existingInterns.length + 1).toString().padStart(3, '0')}`,
-                studentName: data.studentName,
-                email: data.studentEmail,
-                phone: data.studentPhone,
-                degree: data.degree,
-                department: data.department,
-                college: data.college,
-                hodEmail: data.hodEmail,
-                internshipType: data.internshipType,
-                submissionDate: new Date().toISOString().split('T')[0],
-                status: 'Pending',
-                priority: Math.random() > 0.5, // Randomly assign priority for demo
-                referralName: data.referralName,
-            };
+    try {
+        const [resume, bonafideCertificate, studentId, vaccinationCertificate] = await Promise.all([
+            fileToDataURL(data.resume[0]),
+            fileToDataURL(data.bonafideCertificate[0]),
+            fileToDataURL(data.studentId[0]),
+            fileToDataURL(data.vaccinationCertificate[0]),
+        ]);
 
-            const updatedInterns = [...existingInterns, newIntern];
-            localStorage.setItem('interns', JSON.stringify(updatedInterns));
+        const existingInternsJSON = localStorage.getItem('interns');
+        const existingInterns: Intern[] = existingInternsJSON ? JSON.parse(existingInternsJSON) : mockInterns;
+        
+        const newIntern: Intern = {
+            id: `HIC${(existingInterns.length + 1).toString().padStart(3, '0')}`,
+            studentName: data.studentName,
+            email: data.studentEmail,
+            phone: data.studentPhone,
+            degree: data.degree,
+            department: data.department,
+            college: data.college,
+            hodEmail: data.hodEmail,
+            internshipType: data.internshipType,
+            submissionDate: new Date().toISOString().split('T')[0],
+            status: 'Pending',
+            priority: Math.random() > 0.5, // Randomly assign priority for demo
+            referralName: data.referralName,
+            resume,
+            bonafideCertificate,
+            studentId,
+            vaccinationCertificate,
+        };
 
-            toast({
-                title: "Submission Successful!",
-                description: "The intern's details have been recorded.",
-                variant: "default",
-            });
-            router.push('/submission-success');
-        } catch (error) {
-            console.error("Failed to save referral:", error);
-            toast({
-                title: "Submission Failed",
-                description: "Could not save the referral. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    }, 1500);
+        const updatedInterns = [...existingInterns, newIntern];
+        localStorage.setItem('interns', JSON.stringify(updatedInterns));
+
+        toast({
+            title: "Submission Successful!",
+            description: "The intern's details have been recorded.",
+            variant: "default",
+        });
+        router.push('/submission-success');
+    } catch (error) {
+        console.error("Failed to save referral:", error);
+        toast({
+            title: "Submission Failed",
+            description: "Could not process files and save the referral. Please try again.",
+            variant: "destructive",
+        });
+    } finally {
+        setIsLoading(false);
+    }
   }
 
   return (
@@ -192,28 +210,28 @@ export function ReferralForm() {
                         <FormField control={form.control} name="resume" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Resume</FormLabel>
-                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                                <FormControl><Input type="file" accept=".pdf,.doc,.docx" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                         <FormField control={form.control} name="bonafideCertificate" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Bonafide Certificate</FormLabel>
-                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                                <FormControl><Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                         <FormField control={form.control} name="studentId" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Student ID Card</FormLabel>
-                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                                <FormControl><Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                         <FormField control={form.control} name="vaccinationCertificate" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Vaccination Certificate</FormLabel>
-                                <FormControl><Input type="file" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
+                                <FormControl><Input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => field.onChange(e.target.files)} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />

@@ -12,4 +12,8 @@ export type Intern = {
   status: "Pending" | "Verified" | "Rejected";
   priority: boolean;
   referralName: string;
+  resume?: string; 
+  bonafideCertificate?: string;
+  studentId?: string;
+  vaccinationCertificate?: string;
 };
